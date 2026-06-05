@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico Diario de los 5 Elementos – CIHOPERU</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --m:#2D5A1B;--ml:#E8F5E0;--mm:#c0dba8;
+  --f:#8B2500;--fl:#FAECE7;
+  --t:#7B5E2A;--tl:#FAF0DC;
+  --me:#5A5A5A;--mel:#F2F2F0;
+  --a:#1A3A5C;--al:#E6F1FB;
+  --gold:#B8860B;--bg:#FDFCF8;--cream:#FAF8F3;
+  --text:#1C1C1C;--muted:#888;--border:#e8e4dc;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max-width:480px;margin:0 auto;min-height:100vh}
+.screen{display:none;flex-direction:column;min-height:100vh}
+.screen.active{display:flex}
+
+/* HOME */
+#home{background:linear-gradient(160deg,#F8F4EE 0%,#EDF4E8 55%,#E8F0F8 100%);padding:2.5rem 1.5rem;align-items:center;justify-content:center;text-align:center}
+.logo-ring{width:76px;height:76px;border-radius:50%;border:1.5px solid var(--gold);background:white;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:34px}
+.brand{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+.home-title{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,5.5vw,32px);font-weight:400;line-height:1.25;margin-bottom:.4rem}
+.home-title em{font-style:italic;color:var(--m)}
+.home-sub{font-size:13px;color:var(--muted);margin-bottom:.75rem}
+.home-frase{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:#5a6a4a;margin-bottom:2rem;line-height:1.6;padding:0 .5rem}
+.dots{display:flex;gap:8px;justify-content:center;margin-bottom:1.75rem}
+.dot{width:9px;height:9px;border-radius:50%}
+.btn-main{background:var(--m);color:white;border:none;padding:.85rem 2.25rem;border-radius:30px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:background .2s}
+.btn-main:hover{background:#1a3a0f}
+.home-note{font-size:12px;color:var(--muted);margin-top:1rem}
+.welcome-box{background:white;border:1px solid var(--border);border-radius:12px;padding:.85rem 1rem;margin-bottom:1.25rem;width:100%}
+.welcome-title{font-size:12px;font-weight:500;color:var(--m);margin-bottom:.25rem}
+.welcome-text{font-size:13px;color:var(--text);line-height:1.5}
+
+/* REGISTRO */
+#registro{background:var(--cream);padding:1.5rem}
+.back-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:13px;font-family:'DM Sans',sans-serif;margin-bottom:1.25rem;display:block}
+.reg-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;margin-bottom:.25rem}
+.reg-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem}
+.field{margin-bottom:1.1rem}
+.field label{display:block;font-size:11px;font-weight:500;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:.35rem}
+.field input,.field select{width:100%;padding:.7rem 1rem;border:1px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;background:white;color:var(--text);outline:none;transition:border .2s}
+.field input:focus,.field select:focus{border-color:var(--m)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.field-note{font-size:11px;color:var(--muted);margin-top:1rem;line-height:1.5}
+
+/* QUIZ */
+#quiz{background:var(--cream)}
+.quiz-top{padding:1.1rem 1.5rem .75rem;background:white;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+.prog-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.55rem}
+.prog-label{font-size:12px;color:var(--muted)}
+.prog-track{height:4px;background:#e8e4dc;border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--m),var(--gold));border-radius:2px;transition:width .4s ease}
+.quiz-body{flex:1;padding:1.5rem}
+.q-cat{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+.q-text{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:400;line-height:1.35;margin-bottom:1.4rem}
+.opts{display:flex;flex-direction:column;gap:.6rem}
+.opt{background:white;border:1.5px solid var(--border);border-radius:12px;padding:.9rem 1rem;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:.8rem}
+.opt:hover{border-color:var(--m);background:var(--ml)}
+.opt.sel{border-color:var(--m);background:var(--ml)}
+.opt-emoji{font-size:21px;flex-shrink:0}
+.opt-label{font-size:14px;font-weight:400;color:var(--text);line-height:1.4}
+.quiz-foot{padding:.9rem 1.5rem 1.4rem;background:var(--cream)}
+.btn-next{width:100%;padding:.85rem;border-radius:30px;border:none;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;background:#d4cfc5;color:#999;transition:all .3s;pointer-events:none}
+.btn-next.on{background:var(--m);color:white;pointer-events:all}
+
+/* RESULTADO */
+#result{background:var(--cream)}
+.res-intro{background:var(--m);padding:1.1rem 1.4rem;color:white;text-align:center}
+.res-intro-brand{font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.65;margin-bottom:.3rem}
+.res-intro-text{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;opacity:.9;line-height:1.55}
+.res-bienvenida{background:white;margin:.7rem;border-radius:12px;padding:.9rem 1rem;border:1px solid var(--border);text-align:center}
+.res-bienvenida-name{font-size:13px;font-weight:500;color:var(--m);margin-bottom:.2rem}
+.res-bienvenida-msg{font-size:13px;color:var(--text);line-height:1.5}
+.card{background:white;margin:.7rem;border-radius:12px;padding:1rem 1.1rem;border:1px solid var(--border)}
+.card-label{font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.tendencia-box{background:var(--ml);margin:.7rem;border-radius:12px;padding:1rem 1.1rem;border:1px solid var(--mm)}
+.tendencia-label{font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--m);margin-bottom:.35rem}
+.tendencia-text{font-family:'Cormorant Garamond',serif;font-size:17px;color:#1a3a0f;line-height:1.45}
+.eq-bar-wrap{display:flex;align-items:center;gap:.75rem;margin:.4rem 0}
+.eq-bar-track{flex:1;height:10px;background:#e8e4dc;border-radius:5px;overflow:hidden}
+.eq-bar-fill{height:100%;border-radius:5px;transition:width .8s ease}
+.eq-pct{font-size:22px;font-weight:500;font-family:'DM Sans',sans-serif}
+.eq-msg{font-size:12px;color:var(--muted);margin-top:.3rem}
+.barras-wrap{display:flex;align-items:flex-end;gap:7px;height:120px;padding:0 2px}
+.barra-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%}
+.barra-pct{font-size:10px;font-weight:500;color:var(--text)}
+.barra-outer{flex:1;width:100%;background:#ede9e0;border-radius:5px 5px 0 0;display:flex;align-items:flex-end;overflow:hidden}
+.barra-inner{width:100%;border-radius:5px 5px 0 0;transition:height .8s ease;min-height:3px}
+.barra-name{font-size:10px;color:var(--muted);text-align:center;line-height:1.2}
+.barra-estado{font-size:9px;font-weight:500;text-align:center;margin-top:1px}
+.dom-card{margin:.7rem;border-radius:12px;padding:1rem 1.1rem;border:2px solid}
+.dom-header{display:flex;align-items:center;gap:.65rem;margin-bottom:.65rem}
+.dom-emoji{font-size:28px}
+.dom-el{font-size:17px;font-weight:500}
+.dom-sub{font-size:11px;color:var(--muted);margin-top:1px}
+.estado-badge{display:inline-block;padding:.25rem .8rem;border-radius:20px;font-size:11px;font-weight:500;letter-spacing:.03em;margin-bottom:.6rem}
+.frase-box{border-radius:10px;padding:.8rem .9rem;margin-bottom:.75rem}
+.frase-main{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;line-height:1.45;margin-bottom:.35rem}
+.frase-inv{font-size:12px;line-height:1.55}
+.acc-list{display:flex;flex-direction:column;gap:.55rem}
+.acc-item{display:flex;gap:.75rem;align-items:flex-start;background:var(--cream);border-radius:10px;padding:.75rem .85rem}
+.acc-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.acc-body{}
+.acc-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+.acc-txt{font-size:13px;line-height:1.55;color:#444}
+.acc-consejo{background:var(--ml) !important}
+.acc-consejo .acc-txt{font-style:italic;color:#1a3a0f}
+.resumen-grid{display:grid;grid-template-columns:1fr;gap:.5rem}
+.resumen-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem .6rem;background:var(--cream);border-radius:8px}
+.resumen-key{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.resumen-val{font-size:13px;font-weight:500}
+.combo-text{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;line-height:1.6;color:var(--text)}
+.sensible-box{background:#FFF8E6;border:1px solid #f0d070;border-radius:10px;padding:.75rem .9rem;margin-bottom:.5rem}
+.sensible-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);margin-bottom:.25rem}
+.sensible-text{font-size:13px;color:#5a4800;line-height:1.5}
+.recurso-box{background:var(--ml);border:1px solid var(--mm);border-radius:10px;padding:.75rem .9rem}
+.recurso-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--m);margin-bottom:.25rem}
+.recurso-text{font-size:13px;color:#1a3a0f;line-height:1.5}
+.res-foot{padding:1.25rem 1.5rem 2rem;text-align:center}
+.btn-repet{width:100%;padding:.85rem;border-radius:30px;border:2px solid var(--m);background:transparent;color:var(--m);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;transition:all .2s;margin-bottom:.6rem}
+.btn-repet:hover{background:var(--ml)}
+.btns-data{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.btn-data{padding:.6rem;border-radius:25px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;transition:all .2s}
+.btn-data:hover{border-color:var(--m);color:var(--m)}
+.powered{font-size:11px;color:var(--muted);margin-top:1rem;line-height:1.6}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div id="home" class="screen active">
+  <div class="logo-ring">🌿</div>
+  <div class="brand">CIHOPERU · May-Lis Valakivi</div>
+  <h1 class="home-title">Diagnóstico Diario de los<br><em>5 Elementos</em></h1>
+  <p class="home-sub">Medicina Tradicional China · Psicología Integrativa</p>
+  <div id="welcome-area"></div>
+  <p class="home-frase">"Tu cuerpo habla. Hoy vamos a escucharlo."</p>
+  <div class="dots">
+    <div class="dot" style="background:var(--m)"></div>
+    <div class="dot" style="background:var(--f)"></div>
+    <div class="dot" style="background:var(--t)"></div>
+    <div class="dot" style="background:var(--me)"></div>
+    <div class="dot" style="background:var(--a)"></div>
+  </div>
+  <button class="btn-main" id="btn-home-start">Comenzar diagnóstico</button>
+  <p class="home-note">15 preguntas · 5 minutos · Gratuito</p>
+</div>
+
+<!-- REGISTRO -->
+<div id="registro" class="screen">
+  <div style="padding:1.4rem 1.5rem 0">
+    <button class="back-btn" onclick="show('home')">← Volver</button>
+    <div class="reg-title">Antes de comenzar</div>
+    <p class="reg-sub">Tus datos se guardan en este dispositivo para que no tengas que escribirlos cada vez.</p>
+  </div>
+  <div style="flex:1;padding:.5rem 1.5rem 2rem">
+    <div class="field"><label>Nombre *</label><input id="f-nombre" type="text" placeholder="Tu nombre"></div>
+    <div class="field-row">
+      <div class="field"><label>Edad *</label><input id="f-edad" type="number" placeholder="Años" min="10" max="99"></div>
+      <div class="field"><label>Género</label>
+        <select id="f-genero">
+          <option value="">Seleccionar</option>
+          <option>Femenino</option><option>Masculino</option><option>Prefiero no decirlo</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>País / Ciudad</label><input id="f-pais" type="text" placeholder="Ej: Lima, Perú"></div>
+    <div class="field"><label>Correo electrónico</label><input id="f-email" type="email" placeholder="tu@correo.com"></div>
+    <p class="field-note">🔒 Tus datos se guardan solo en este dispositivo y no se comparten con terceros.</p>
+    <button class="btn-main" style="width:100%;margin-top:1rem" id="btn-comenzar">Comenzar →</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="screen">
+  <div class="quiz-top">
+    <div class="prog-row">
+      <span class="prog-label" id="prog-label">Pregunta 1 de 15</span>
+      <span class="prog-label" id="prog-pct">7%</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:7%"></div></div>
+  </div>
+  <div class="quiz-body">
+    <div class="q-cat" id="q-cat"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="opts" id="q-opts"></div>
+  </div>
+  <div class="quiz-foot">
+    <button class="btn-next" id="btn-next" onclick="nextQ()">Siguiente →</button>
+  </div>
+</div>
+
+<!-- RESULTADO -->
+<div id="result" class="screen">
+  <div class="res-intro">
+    <div class="res-intro-brand">Diagnóstico Diario de los 5 Elementos – CIHOPERU</div>
+    <div class="res-intro-text">"Tu energía cambia cada día. Lo que ves aquí es tu momento actual, no una etiqueta, sino una invitación a ocuparte de ti."</div>
+  </div>
+  <div class="res-bienvenida" id="res-bienvenida"></div>
+  <div class="tendencia-box">
+    <div class="tendencia-label">Tendencia del día</div>
+    <div class="tendencia-text" id="tendencia-text"></div>
+  </div>
+  <div class="card">
+    <div class="card-label">Índice general de equilibrio</div>
+    <div class="eq-bar-wrap">
+      <div class="eq-bar-track"><div class="eq-bar-fill" id="eq-bar" style="width:0%"></div></div>
+      <div class="eq-pct" id="eq-pct">0%</div>
+    </div>
+    <div class="eq-msg" id="eq-msg"></div>
+  </div>
+  <div class="card">
+    <div class="card-label">Mapa energético de tus 5 elementos</div>
+    <div class="barras-wrap" id="barras"></div>
+    <div style="display:flex;justify-content:center;gap:1.25rem;margin-top:.9rem;font-size:11px;color:var(--muted)">
+      <span>🔵 Baja</span><span>🟢 Equilibrio</span><span>🟡 Alta</span><span>🔴 Exceso</span>
+    </div>
+  </div>
+  <div id="sensible-recurso"></div>
+  <div id="dom-block"></div>
+  <div class="card" id="resumen-card">
+    <div class="card-label">Tu energía hoy</div>
+    <div class="resumen-grid" id="resumen-grid"></div>
+  </div>
+  <div class="card">
+    <div class="card-label">Interpretación de tu combinación</div>
+    <div class="combo-text" id="combo-text"></div>
+  </div>
+  <div class="res-foot">
+    <button class="btn-repet" onclick="reiniciar()">Hacer el diagnóstico de nuevo</button>
+    <div class="btns-data">
+      <button class="btn-data" onclick="actualizarDatos()">Actualizar mis datos</button>
+      <button class="btn-data" onclick="borrarDatos()">Borrar datos guardados</button>
+    </div>
+    <div class="powered">May-Lis Valakivi · Psicóloga &amp; Acupuntora<br>CIHOPERU · cihoperuonline@gmail.com</div>
+  </div>
+</div>
+
+<script>
+// ── ELEMENTOS CONFIG ──────────────────────────────────────────────
+var EL = {
+  Madera:{emoji:'🌿',color:'#2D5A1B',light:'#E8F5E0',border:'#2D5A1B',organos:'Hígado & Vesícula'},
+  Fuego: {emoji:'🔥',color:'#8B2500',light:'#FAECE7',border:'#8B2500',organos:'Corazón & Intestino Delgado'},
+  Tierra:{emoji:'🌾',color:'#7B5E2A',light:'#FAF0DC',border:'#7B5E2A',organos:'Bazo & Estómago'},
+  Metal: {emoji:'⚪',color:'#5A5A5A',light:'#F2F2F0',border:'#5A5A5A',organos:'Pulmones & Intestino Grueso'},
+  Agua:  {emoji:'💧',color:'#1A3A5C',light:'#E6F1FB',border:'#1A3A5C',organos:'Riñones & Vejiga'}
+};
+var ELS = ['Madera','Fuego','Tierra','Metal','Agua'];
+
+// ── PREGUNTAS ORIGINALES ──────────────────────────────────────────
+var PREGUNTAS = [
+  {cat:"Cuando te sientes bien…", text:"¿Cuál de estas cualidades te describe mejor cuando te sientes bien?", opts:[
+    {e:"🌿",l:"Fluyes con las cosas · Eres creativo · Tomas decisiones con claridad", el:"Madera"},
+    {e:"🔥",l:"Sientes alegría · Vives en paz · Disfrutas la vida", el:"Fuego"},
+    {e:"🌾",l:"Comprendes a los demás · Te cuidas · Nutres a quienes te rodean", el:"Tierra"},
+    {e:"⚪",l:"Mantienes el orden · Confías en tu intuición · Actúas con disciplina", el:"Metal"},
+    {e:"💧",l:"Tienes voluntad · Actúas con valentía · Reflexionas profundamente", el:"Agua"}
+  ]},
+  {cat:"Cuando algo no está bien…", text:"¿Cuál de estas sensaciones reconoces cuando algo no está bien?", opts:[
+    {e:"😤",l:"Irritación · Frustración · Impaciencia", el:"Madera"},
+    {e:"⚡",l:"Agitación · Ansiedad · No puedo parar", el:"Fuego"},
+    {e:"😟",l:"Preocupación · Dar vueltas · Pesadez", el:"Tierra"},
+    {e:"😔",l:"Tristeza · No puedo soltar · Melancolía", el:"Metal"},
+    {e:"😨",l:"Inseguridad · Miedo · Parálisis", el:"Agua"}
+  ]},
+  {cat:"Sabor", text:"¿Cuál de estos sabores sientes más necesidad de comer hoy?", opts:[
+    {e:"🍋",l:"Ácido · Limón · Vinagre · Encurtidos", el:"Madera"},
+    {e:"☕",l:"Amargo · Café · Cacao · Rúcula", el:"Fuego"},
+    {e:"🍬",l:"Dulce · Miel · Camote · Carbohidratos", el:"Tierra"},
+    {e:"🌶️",l:"Picante · Ají · Jengibre · Mostaza", el:"Metal"},
+    {e:"🧂",l:"Salado · Soya · Mariscos · Agua mineral", el:"Agua"}
+  ]},
+  {cat:"Color", text:"¿Qué color te atrae o sientes que necesitas hoy?", opts:[
+    {e:"💚",l:"Verde · Bosque · Naturaleza · Frescura", el:"Madera"},
+    {e:"❤️",l:"Rojo · Naranja · Fuego · Calor", el:"Fuego"},
+    {e:"💛",l:"Amarillo · Dorado · Miel · Ocre", el:"Tierra"},
+    {e:"🤍",l:"Blanco · Plateado · Cristal · Gris claro", el:"Metal"},
+    {e:"💙",l:"Azul oscuro · Negro · Noche · Profundidad", el:"Agua"}
+  ]},
+  {cat:"Bebida", text:"¿Qué bebida te provoca más tomar ahora?", opts:[
+    {e:"🍵",l:"Té verde · Agua con limón · Bebidas ácidas", el:"Madera"},
+    {e:"☕",l:"Café · Té rojo · Bebidas estimulantes", el:"Fuego"},
+    {e:"🧃",l:"Jugo dulce · Batido · Leche · Infusión suave", el:"Tierra"},
+    {e:"💧",l:"Agua pura · Agua tibia · Infusión de jengibre", el:"Metal"},
+    {e:"🫐",l:"Chicha morada · Jugo de uva negra · Agua de mar", el:"Agua"}
+  ]},
+  {cat:"Momento del día", text:"¿En qué momento del día te sientes con más energía?", opts:[
+    {e:"🌅",l:"Madrugada · 1am a 5am · Me desvelo", el:"Madera"},
+    {e:"☀️",l:"Mediodía · 11am a 1pm · Sol alto", el:"Fuego"},
+    {e:"🌤️",l:"Mañana tranquila · 7am a 9am · Despertar suave", el:"Tierra"},
+    {e:"🌆",l:"Tarde · 3pm a 5pm · Bajón de energía", el:"Metal"},
+    {e:"🌙",l:"Noche · Después de las 5pm · Silencio", el:"Agua"}
+  ]},
+  {cat:"Ocio", text:"¿Qué actividad te apetece más hacer ahora mismo?", opts:[
+    {e:"🏃",l:"Moverme · Salir · Caminar en la naturaleza", el:"Madera"},
+    {e:"🎉",l:"Socializar · Reír · Conectar con otros", el:"Fuego"},
+    {e:"🍳",l:"Cocinar · Comer algo rico · Estar en casa", el:"Tierra"},
+    {e:"📖",l:"Leer · Ordenar · Estar en silencio", el:"Metal"},
+    {e:"🛁",l:"Descansar · Bañarme · No hacer nada", el:"Agua"}
+  ]},
+  {cat:"Proteína", text:"¿Cuál de estas proteínas te provoca comer hoy?", opts:[
+    {e:"🐔",l:"Pollo · Pavo · Carnes blancas magras", el:"Madera"},
+    {e:"🥩",l:"Cordero · Carne roja · Hígado", el:"Fuego"},
+    {e:"🐄",l:"Res · Carne de vaca · Carnes nutritivas", el:"Tierra"},
+    {e:"🐟",l:"Pescado blanco · Atún · Merluza", el:"Metal"},
+    {e:"🦐",l:"Mariscos · Salmón · Pescado azul", el:"Agua"}
+  ]},
+  {cat:"Sonido", text:"¿Cuál de estos sonidos o formas de expresión reconoces en ti hoy?", opts:[
+    {e:"📢",l:"Llamar · Gritar para llamar · Alzar la voz", el:"Madera"},
+    {e:"😄",l:"Reír · Carcajada · Sonido alegre", el:"Fuego"},
+    {e:"🎵",l:"Cantar · Tararear · Melodía suave", el:"Tierra"},
+    {e:"😤",l:"Suspirar · Sollozar · Gemir profundo", el:"Metal"},
+    {e:"🌊",l:"Silencio · Sonido del agua · Música instrumental", el:"Agua"}
+  ]},
+  {cat:"Postura", text:"¿En qué posición estás o preferirías estar ahora?", opts:[
+    {e:"🧍",l:"De pie · Activo · Listo para moverse", el:"Madera"},
+    {e:"🚶",l:"Caminando · En movimiento · Sin parar", el:"Fuego"},
+    {e:"🪑",l:"Sentado · Cómodo · Con los pies en el suelo", el:"Tierra"},
+    {e:"🧎",l:"Quieto · Recogido · En silencio", el:"Metal"},
+    {e:"🛋️",l:"Acostado · Encogido · Descansando", el:"Agua"}
+  ]},
+  {cat:"Caramelo", text:"¿Cuál de estos caramelos elegirías ahora?", opts:[
+    {e:"🍋",l:"Limón · Ácido · Cítrico", el:"Madera"},
+    {e:"🍓",l:"Fresa · Frambuesa · Frutas rojas", el:"Fuego"},
+    {e:"🍮",l:"Toffee · Caramelo · Manjar", el:"Tierra"},
+    {e:"🌿",l:"Menta · Eucalipto · Refrescante", el:"Metal"},
+    {e:"🍫",l:"Chocolate · Café · Amargo dulce", el:"Agua"}
+  ]},
+  {cat:"Snack", text:"¿Qué snack elegirías ahora mismo?", opts:[
+    {e:"🥬",l:"Apio · Palta · Algo fresco y verde", el:"Madera"},
+    {e:"🥩",l:"Jamón · Salame · Algo intenso y sabroso", el:"Fuego"},
+    {e:"🍿",l:"Pop Corn · Chips de plátano · Algo suave y ligeramente dulce", el:"Tierra"},
+    {e:"🌽",l:"Nachos · Galletas saladas · Algo crujiente", el:"Metal"},
+    {e:"🥔",l:"Papas fritas · Camote · Algo salado y reconfortante", el:"Agua"}
+  ]},
+  {cat:"Sentido", text:"¿Cuál de estos sentidos sientes más activo o necesitas más hoy?", opts:[
+    {e:"👁️",l:"Vista · Ver · Observar", el:"Madera"},
+    {e:"👅",l:"Gusto · Saborear · Probar", el:"Fuego"},
+    {e:"🤲",l:"Tacto · Tocar · Sentir con el cuerpo", el:"Tierra"},
+    {e:"👃",l:"Olfato · Oler · Percibir aromas", el:"Metal"},
+    {e:"👂",l:"Oído · Escuchar · Percibir sonidos", el:"Agua"}
+  ]},
+  {cat:"Sonido interior", text:"¿Cuál de estos sonidos harías o escucharías ahora?", opts:[
+    {e:"🎸",l:"Música intensa · Rock · Ritmo fuerte", el:"Madera"},
+    {e:"🎺",l:"Música alegre · Jazz · Ritmo vivo", el:"Fuego"},
+    {e:"🎵",l:"Canción suave · Balada · Melodía cálida", el:"Tierra"},
+    {e:"🎻",l:"Música clásica · Silencio organizado", el:"Metal"},
+    {e:"🌊",l:"Sonido del agua · Silencio profundo · Música instrumental", el:"Agua"}
+  ]},
+  {cat:"Textura", text:"¿Cuál de estos materiales o texturas te atrae más ahora?", opts:[
+    {e:"🪵",l:"Madera · Natural · Fibras vegetales", el:"Madera"},
+    {e:"🕯️",l:"Cera · Tela cálida · Algo suave al tacto", el:"Fuego"},
+    {e:"🌍",l:"Tierra húmeda · Arcilla · Lana", el:"Tierra"},
+    {e:"🪨",l:"Piedra · Metal frío · Superficies lisas", el:"Metal"},
+    {e:"💧",l:"Agua · Arena mojada · Seda fluida", el:"Agua"}
+  ]}
+];
+
+// ── DATOS DE RESULTADO ────────────────────────────────────────────
+var DATOS = {
+  Madera:{
+    frase_desbalance:"Tu Madera necesita fluir mejor ahora.",
+    frase_equilibrio:"Tu Madera agradece la atención que le estás dando.",
+    inv_baja:"Observa si necesita más atención en el plano físico, mental, emocional o espiritual. Pequeñas acciones pueden hacer una gran diferencia.",
+    inv_alta:"Obsérvala con atención. Si te sientes bien, aprovecha su fuerza. Si sientes tensión, dale espacio para que fluya.",
+    inv_exceso:"Tal vez necesita más calma, descanso, espacio o regulación para volver a equilibrarse. No hay que forzar — solo acompañar el proceso.",
+    inv_eq:"Hoy puedes apoyarte en su fortaleza.",
+    exceso:{
+      diag:"Tu Madera tiene mucha energía activa hoy. Puede haber tensión, irritabilidad o una sensación de querer moverse sin encontrar dirección clara. Es energía que busca fluir — ayúdala a hacerlo.",
+      acc1:{icon:"🍋",lbl:"Acción 1",txt:"Come una sopa de pollo con limón, un ceviche o sushi. El sabor ácido ayuda al Hígado a liberar la tensión acumulada."},
+      acc2:{icon:"🌿",lbl:"Acción 2",txt:"Durante 3 días come más verduras verdes, añade limón a tus comidas y trata de dormir antes de las 11 p.m."},
+      flash:{icon:"⚡",lbl:"Flash",txt:"Exprime unas gotas de limón directamente en tu boca o toma una limonada natural ahora mismo."},
+      consejo:{icon:"💡",lbl:"Consejo",txt:"La frustración no resuelta se convierte en tensión corporal. Hoy identifica qué situación o persona te genera resistencia — y pregúntate si hay algo que puedas soltar o comunicar."}
+    },
+    baja:{
+      diag:"Tu Madera tiene poca energía activa hoy. Puede haber dificultad para tomar decisiones, falta de iniciativa o sensación de estar bloqueado. Tu sistema necesita ser nutrido y estimulado.",
+      acc1:{icon:"🥩",lbl:"Acción 1",txt:"Come proteína de buena calidad hoy — pollo, hígado o carne roja en pequeña cantidad. La Madera en baja energía necesita construir fuerza."},
+      acc2:{icon:"🚶",lbl:"Acción 2",txt:"Muévete aunque sea 15 minutos al aire libre. La Madera necesita expansión. Evita el sedentarismo y los espacios cerrados hoy."},
+      flash:{icon:"⚡",lbl:"Flash",txt:"Párate, estira los brazos hacia arriba y respira profundo 5 veces. Dale a tu energía Madera la señal de que puede expandirse."},
+      consejo:{icon:"💡",lbl:"Consejo",txt:"Cuando la iniciativa falta, a veces es porque hay un deseo reprimido o una decisión postergada. Pregúntate: ¿qué es lo que en realidad quiero hacer hoy?"}
+    }
+  },
+  Fuego:{
+    frase_desbalance:"Tu Fuego necesita un poco más de calma ahora.",
+    frase_equilibrio:"Tu Fuego agradece la atención que le estás dando.",
+    inv_baja:"Observa si necesita más atención en el plano físico, mental, emocional o espiritual. Pequeñas acciones pueden hacer una gran diferencia.",
+    inv_alta:"Hay mucha energía de conexión y emoción — obsérvala con calma.",
+    inv_exceso:"Tal vez necesita más calma, descanso, espacio o regulación para volver a equilibrarse. No hay que forzar — solo acompañar el proceso.",
+    inv_eq:"Hay calidez y conexión disponibles para ti hoy.",
+    exceso:{
+      diag:"Tu Fuego tiene mucha energía activa hoy. Puede haber aceleración, ansiedad o dificultad para bajar el ritmo. Tu corazón está trabajando de más y necesita un momento de quietud.",
+      acc1:{icon:"🥦",lbl:"Acción 1",txt:"Come verduras frescas con pimiento rojo y pescado al vapor. Prefiere comidas ligeras y frescas que ayuden a bajar el calor interno."},
+      acc2:{icon:"🧘",lbl:"Acción 2",txt:"Durante 3 días prefiere comidas al vapor, reduce el café y las grasas. Practica al menos 5 minutos de respiración lenta antes de dormir."},
+      flash:{icon:"⚡",lbl:"Flash",txt:"Para todo lo que estás haciendo, siéntate y haz 10 respiraciones lentas y profundas. El Fuego en exceso se regula con quietud."},
+      consejo:{icon:"💡",lbl:"Consejo",txt:"La ansiedad muchas veces es entusiasmo sin dirección clara. Pregúntate: ¿hacia dónde quiero que vaya toda esta energía que tengo hoy?"}
+    },
+    baja:{
+      diag:"Tu Fuego tiene poca energía activa hoy. Puede haber falta de entusiasmo, desconexión emocional o sensación de apagamiento. Tu corazón necesita ser encendido con suavidad.",
+      acc1:{icon:"☕",lbl:"Acción 1",txt:"Toma un café amargo o con muy poca azúcar, o come un pequeño trozo de chocolate oscuro. El sabor amargo nutre el Corazón."},
+      acc2:{icon:"🤗",lbl:"Acción 2",txt:"Conéctate con alguien que te alegre. El Fuego se activa con el contacto humano genuino. Busca una actividad que disfrutes de verdad hoy."},
+      flash:{icon:"⚡",lbl:"Flash",txt:"Llama o escribe a alguien que te alegre el corazón. La conexión genuina enciende el Fuego más rápido que cualquier alimento."},
+      consejo:{icon:"💡",lbl:"Consejo",txt:"Cuando la alegría falta, a veces es porque estamos dando mucho sin recibir. Hoy date permiso de recibir — afecto, reconocimiento, descanso."}
+    }
+  },
+  Tierra:{
+    frase_desbalance:"Tu Tierra necesita descansar de tanto pensar por un momento.",
+    frase_equilibrio:"Tu Tierra agradece la atención que le estás dando.",
+    inv_baja:"Observa si necesita más atención en el plano físico, mental, emocional o espiritual. Pequeñas acciones pueden hacer una gran diferencia.",
+    inv_alta:"Hay mucho cuidado y pensamiento en ti ahora — observa si también te estás nutriendo a ti mismo/a.",
+    inv_exceso:"Tal vez necesita más calma, descanso, espacio o regulación para volver a equilibrarse. No hay que forzar — solo acompañar el proceso.",
+    inv_eq:"Hay estabilidad y centro disponibles para ti hoy.",
+    exceso:{
+      diag:"Tu Tierra tiene mucha energía activa hoy. Puede haber preocupación excesiva, pensamiento circular o sensación de pesadez. Tu centro digestivo está saturado y pide calma.",
+      acc1:{icon:"🥗",lbl:"Acción 1",txt:"Evita los dulces y las harinas blancas hoy. Dale descanso a tu digestión y a tu mente al mismo tiempo."},
+      acc2:{icon:"🌬️",lbl:"Acción 2",txt:"Durante 3 días practica despreocuparte conscientemente. Si no vacías la mente, no habrá espacio para nuevas ideas. Permite que la respuesta llegue sola."},
+      flash:{icon:"⚡",lbl:"Flash",txt:"Anota en un papel todo lo que te preocupa y ciérralo en un cajón. Solo por hoy. Tu Tierra necesita soltar el control."},
+      consejo:{icon:"💡",lbl:"Consejo",txt:"La preocupación es el intento de la mente de controlar lo incontrolable. Pregúntate: ¿qué de lo que me preocupa realmente puedo resolver hoy? Haz solo eso."}
+    },
+    baja:{
+      diag:"Tu Tierra tiene poca energía activa hoy. Puede haber sensación de vacío, falta de contención o necesidad de ser nutrido. Tu centro necesita recibir atención y alimento.",
+      acc1:{icon:"🍫",lbl:"Acción 1",txt:"Come algo naturalmente dulce y nutritivo — chocolate con maní, almendras o pecanas, lentejas o sándwich con camote."},
+      acc2:{icon:"🏠",lbl:"Acción 2",txt:"Cocina en casa una comida caliente y nutritiva. La Tierra en baja energía necesita el acto de preparar y recibir alimento con cuidado."},
+      flash:{icon:"⚡",lbl:"Flash",txt:"Date un abrazo — literalmente. Cruza los brazos sobre tu pecho y aprieta suavemente 30 segundos. Es el gesto de la Tierra: contenerse a uno mismo."},
+      consejo:{icon:"💡",lbl:"Consejo",txt:"Cuando el centro está bajo, a veces es porque llevamos tiempo dando sin recibir. Hoy hazte esta pregunta: ¿qué necesito yo?"}
+    }
+  },
+  Metal:{
+    frase_desbalance:"Tu Metal necesita soltar y respirar mejor ahora.",
+    frase_equilibrio:"Tu Metal agradece la atención que le estás dando.",
+    inv_baja:"Observa si necesita más atención en el plano físico, mental, emocional o espiritual. Pequeñas acciones pueden hacer una gran diferencia.",
+    inv_alta:"Hay mucha capacidad de análisis y claridad — es un buen momento para ordenar lo importante.",
+    inv_exceso:"Tal vez necesita más calma, descanso, espacio o regulación para volver a equilibrarse. No hay que forzar — solo acompañar el proceso.",
+    inv_eq:"Hay claridad y capacidad de discernimiento disponibles hoy.",
+    exceso:{
+      diag:"Tu Metal tiene mucha energía activa hoy. Puede haber tristeza contenida, rigidez o dificultad para soltar algo del pasado. Tu energía necesita moverse y dejar ir.",
+      acc1:{icon:"🌶️",lbl:"Acción 1",txt:"Come algo ligeramente picante o aromático — un snack picantito, mostaza, ají, ajo, canela o clavo de olor. El picante moviliza y suelta."},
+      acc2:{icon:"🗑️",lbl:"Acción 2",txt:"Regala, recicla o desecha algo que ya cumplió su ciclo, aunque no esté roto. Así creas espacio interno para lo nuevo."},
+      flash:{icon:"⚡",lbl:"Flash",txt:"Respira profundamente y suspira con fuerza varias veces. Cada suspiro es Metal soltando lo que ya no necesita."},
+      consejo:{icon:"💡",lbl:"Consejo",txt:"Así como exhalas el aire que ya no necesitas, también puedes dejar ir pensamientos y recuerdos del pasado. Soltar no es perder — es crear espacio."}
+    },
+    baja:{
+      diag:"Tu Metal tiene poca energía activa hoy. Puede haber desorganización, falta de límites claros o dificultad para establecer orden interno. Tu sistema necesita estructura y respiración.",
+      acc1:{icon:"🫁",lbl:"Acción 1",txt:"Toma agua tibia pura y respira profundo 10 veces, llenando completamente los pulmones. El Metal en baja energía necesita construir su capacidad respiratoria."},
+      acc2:{icon:"📋",lbl:"Acción 2",txt:"Establece una rutina pequeña hoy y cúmplela: levantarte a la misma hora, ordenar un espacio antes de dormir. El Metal se fortalece con la disciplina suave."},
+      flash:{icon:"⚡",lbl:"Flash",txt:"Ordena un espacio pequeño — tu mesa, tu cartera, un cajón. El Metal en baja energía se activa cuando el entorno toma forma y orden."},
+      consejo:{icon:"💡",lbl:"Consejo",txt:"Los límites no son muros, son el contorno de lo que eres. Definirlos es un acto de autocuidado. Hoy pregúntate: ¿con qué estoy de acuerdo y con qué no?"}
+    }
+  },
+  Agua:{
+    frase_desbalance:"Tu Agua necesita circular mejor ahora.",
+    frase_equilibrio:"Tu Agua agradece la atención que le estás dando.",
+    inv_baja:"Observa si necesita más atención en el plano físico, mental, emocional o espiritual. Pequeñas acciones pueden hacer una gran diferencia.",
+    inv_alta:"Hay mucha profundidad en ti ahora — y quizás también algo de incertidumbre.",
+    inv_exceso:"Tal vez necesita más calma, descanso, espacio o regulación para volver a equilibrarse. No hay que forzar — solo acompañar el proceso.",
+    inv_eq:"Hay profundidad y voluntad disponibles para ti hoy.",
+    exceso:{
+      diag:"Tu Agua tiene mucha energía activa hoy. Puede haber miedo, inseguridad o parálisis ante lo que viene. Tu energía necesita anclarse y transformarse en movimiento.",
+      acc1:{icon:"🍖",lbl:"Acción 1",txt:"Come algo que te dé fuerza y calor: caldo de pollo, lentejas, arroz con huevo. El Agua en exceso necesita ancla y calor para no paralizarse."},
+      acc2:{icon:"🚶",lbl:"Acción 2",txt:"Camina 15 minutos hoy, preferentemente cerca de la naturaleza o el agua. El movimiento suave transforma el miedo en voluntad."},
+      flash:{icon:"⚡",lbl:"Flash",txt:"Planta los dos pies en el suelo, cierra los ojos y siente el piso bajo tus talones. El Agua necesita tierra que la contenga."},
+      consejo:{icon:"💡",lbl:"Consejo",txt:"El miedo y la intuición usan el mismo canal. Pregúntate: ¿esto que siento es una señal real o es el miedo proyectando un futuro que aún no existe?"}
+    },
+    baja:{
+      diag:"Tu Agua tiene poca energía activa hoy. Puede haber agotamiento profundo, falta de voluntad o sensación de que las reservas están bajas. Tu sistema pide ser repuesto y descansado.",
+      acc1:{icon:"🫐",lbl:"Acción 1",txt:"Toma una bebida oscura como chicha morada, jugo de uva negra o café. También puedes comer 7 pasas, 3 guindones o berenjena."},
+      acc2:{icon:"🐟",lbl:"Acción 2",txt:"Come pescado azul como salmón o trucha, mariscos o un plato con salsa de soya. Mantén los pies calientes y duerme un poco más."},
+      flash:{icon:"⚡",lbl:"Flash",txt:"Acuéstate y descansa por un momento o por todo lo que necesites hoy. Permitir que tu cuerpo se recupere es la acción más inteligente ahora."},
+      consejo:{icon:"💡",lbl:"Consejo",txt:"Descansar no es perder el tiempo — es invertir en tu fuerza futura. El Agua te enseña que incluso en la quietud se está formando una nueva energía interior."}
+    }
+  }
+};
+
+// ── COMBINACIONES ─────────────────────────────────────────────────
+var COMBOS = {
+  "Madera_exceso-Fuego_exceso":"Madera activa con Fuego encendido: hay mucha energía ascendente. Tu sistema nervioso está muy activo. Hay fuerza y creatividad disponibles — pero también riesgo de agotamiento. Prioriza bajar el ritmo antes de que el cuerpo lo haga por ti.",
+  "Madera_exceso-Fuego_baja":"Tensión de Madera sin salida emocional. La frustración no encuentra alivio en la alegría ni en la conexión. Puede aparecer irritabilidad fría o desconexión de lo que sientes.",
+  "Madera_baja-Fuego_exceso":"Mucha actividad mental y social sin raíces que la sostengan. El Fuego quema energía que la Madera no está produciendo. Cuidado con el agotamiento por dispersión.",
+  "Madera_baja-Fuego_baja":"Tanto la iniciativa como el entusiasmo están bajos hoy. El cuerpo pide descanso profundo y nutrición antes de volver a moverse. Es un día para recargar, no para exigir.",
+  "Madera_exceso-Tierra_exceso":"La tensión y la irritabilidad están afectando tu centro digestivo directamente. Es posible que notes pesadez o molestias digestivas relacionadas con lo que estás cargando emocionalmente.",
+  "Madera_baja-Tierra_exceso":"La falta de dirección alimenta la preocupación. Sin movimiento hacia adelante, la mente da vueltas. Moverse físicamente — aunque sea poco — puede romper el ciclo.",
+  "Fuego_exceso-Tierra_exceso":"Mucha actividad mental y emocional genera pesadez digestiva. Estás procesando mucho al mismo tiempo. El sistema necesita quietud y comidas simples.",
+  "Fuego_baja-Tierra_baja":"Vacío de alegría y de centro al mismo tiempo. El cuerpo pide calidez — humana, alimentaria y emocional. Hoy es día de recibir, no de dar.",
+  "Tierra_exceso-Metal_exceso":"Preocupación que no puede soltarse. El pensamiento circular se combina con la dificultad para dejar ir. Pequeñas acciones de soltar pueden romper este patrón.",
+  "Tierra_baja-Metal_baja":"Vacío de centro y de límites. El cuerpo pide estructura y nutrición al mismo tiempo. Empieza por lo más simple: come algo cálido y ordena un espacio pequeño.",
+  "Metal_exceso-Agua_exceso":"Dificultad para soltar y para avanzar al mismo tiempo. Puede sentirse como un bloqueo total. Acciones pequeñas y concretas son el antídoto — no hace falta resolver todo hoy.",
+  "Metal_baja-Agua_baja":"Agotamiento profundo con falta de estructura interna. El cuerpo necesita descanso, calor y tiempo — no más exigencias. Hoy es día de cuidado básico.",
+  "Metal_exceso-Agua_baja":"Sosteniendo cosas viejas sin reserva energética para hacerlo. Soltar algo — aunque sea pequeño — libera una energía que el cuerpo necesita urgentemente.",
+  "Metal_baja-Agua_exceso":"Sin límites internos claros y con mucho miedo. La falta de estructura amplifica la inseguridad. Establecer pequeñas rutinas es el antídoto más poderoso hoy.",
+  "Agua_exceso-Madera_baja":"Mucho miedo sin voluntad de actuar. El movimiento físico suave — aunque sea 10 minutos — es el primer paso para transformar la parálisis en dirección.",
+  "Agua_baja-Madera_baja":"Los dos elementos que sostienen la acción y la vida están bajos. Prioridad absoluta hoy: descanso y nutrición. No es momento de exigir — es momento de reponer.",
+  "Fuego_exceso-Agua_baja":"Mucha aceleración sin reserva energética para sostenerla. El cuerpo se está quemando sin tener con qué. Parar y descansar no es opcional hoy — es necesario.",
+  "Agua_exceso-Fuego_baja":"El miedo apaga la alegría. Pequeños actos de conexión genuina y calidez pueden romper este ciclo. Busca algo que te haga sonreír hoy, aunque sea pequeño."
+};
+
+// ── ESTADO APP ────────────────────────────────────────────────────
+var cur = 0, selEl = null;
+var scores = {Madera:0,Fuego:0,Tierra:0,Metal:0,Agua:0};
+var p1El = null, p2El = null;
+var equilRespuestas = 0;
+
+// ── LOCALSTORAGE ──────────────────────────────────────────────────
+var LS_KEY = 'cihoperu_usuario';
+var LS_HIST = 'cihoperu_historial';
+
+function guardarUsuario(){
+  var u = {
+    nombre: document.getElementById('f-nombre').value.trim(),
+    edad: document.getElementById('f-edad').value.trim(),
+    genero: document.getElementById('f-genero').value,
+    pais: document.getElementById('f-pais').value.trim(),
+    email: document.getElementById('f-email').value.trim()
+  };
+  localStorage.setItem(LS_KEY, JSON.stringify(u));
+  return u;
+}
+
+function cargarUsuario(){
+  try{ return JSON.parse(localStorage.getItem(LS_KEY)||'null'); }catch(e){ return null; }
+}
+
+function cargarHistorial(){
+  try{ return JSON.parse(localStorage.getItem(LS_HIST)||'null'); }catch(e){ return null; }
+}
+
+function guardarHistorial(elem, estado){
+  var h = cargarHistorial() || {count:0, primera:null, ultima:null};
+  h.count++;
+  var hoy = new Date().toISOString();
+  if(!h.primera) h.primera = hoy;
+  h.ultima = hoy;
+  h.ultimoElem = elem;
+  h.ultimoEstado = estado;
+  localStorage.setItem(LS_HIST, JSON.stringify(h));
+  return h;
+}
+
+function diasDesde(isoStr){
+  if(!isoStr) return 0;
+  var d = (new Date() - new Date(isoStr)) / (1000*60*60*24);
+  return Math.floor(d);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+window.onload = function(){
+  var u = cargarUsuario();
+  var h = cargarHistorial();
+  var wa = document.getElementById('welcome-area');
+  if(u && u.nombre){
+    var msg = '';
+    if(h && h.count > 0){
+      var dias = diasDesde(h.ultima);
+      if(dias === 0) msg = 'Hoy ya hiciste el diagnóstico. Puedes hacerlo de nuevo.';
+      else if(dias === 1) msg = 'Han pasado <strong>1 día</strong> desde tu último diagnóstico.';
+      else msg = 'Han pasado <strong>'+dias+' días</strong> desde tu último diagnóstico.';
+    } else {
+      msg = 'Este será tu primer diagnóstico.';
+    }
+    wa.innerHTML = '<div class="welcome-box"><div class="welcome-title">Bienvenida/o, '+u.nombre+'</div><div class="welcome-text">'+msg+'</div></div>';
+    document.getElementById('btn-home-start').onclick = function(){ show('registro'); precargarDatos(); };
+  } else {
+    document.getElementById('btn-home-start').onclick = function(){ show('registro'); };
+  }
+};
+
+function precargarDatos(){
+  var u = cargarUsuario();
+  if(!u) return;
+  document.getElementById('f-nombre').value = u.nombre||'';
+  document.getElementById('f-edad').value = u.edad||'';
+  document.getElementById('f-genero').value = u.genero||'';
+  document.getElementById('f-pais').value = u.pais||'';
+  document.getElementById('f-email').value = u.email||'';
+}
+
+document.getElementById('btn-comenzar').addEventListener('click', function(){
+  var n = document.getElementById('f-nombre').value.trim();
+  var e = document.getElementById('f-edad').value.trim();
+  if(!n||!e){ alert('Por favor ingresa tu nombre y edad para continuar.'); return; }
+  guardarUsuario();
+  iniciarQuiz();
+});
+
+// ── QUIZ ──────────────────────────────────────────────────────────
+function iniciarQuiz(){
+  cur=0; selEl=null; p1El=null; p2El=null; equilRespuestas=0;
+  ELS.forEach(function(e){ scores[e]=0; });
+  renderQ();
+  show('quiz');
+}
+
+function renderQ(){
+  var q = PREGUNTAS[cur];
+  var pct = Math.round(((cur+1)/PREGUNTAS.length)*100);
+  document.getElementById('prog-label').textContent = 'Pregunta '+(cur+1)+' de '+PREGUNTAS.length;
+  document.getElementById('prog-pct').textContent = pct+'%';
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('q-cat').textContent = q.cat;
+  document.getElementById('q-text').textContent = q.text;
+  var opts = document.getElementById('q-opts');
+  opts.innerHTML = '';
+  q.opts.forEach(function(o){
+    var d = document.createElement('div');
+    d.className = 'opt';
+    d.innerHTML = '<span class="opt-emoji">'+o.e+'</span><span class="opt-label">'+o.l+'</span>';
+    d.onclick = (function(el){ return function(){ selectOpt(d, el); }; })(o.el);
+    opts.appendChild(d);
+  });
+  selEl = null;
+  document.getElementById('btn-next').classList.remove('on');
+}
+
+function selectOpt(el, elemento){
+  document.querySelectorAll('.opt').forEach(function(o){ o.classList.remove('sel'); });
+  el.classList.add('sel');
+  selEl = elemento;
+  document.getElementById('btn-next').classList.add('on');
+}
+
+function nextQ(){
+  if(!selEl) return;
+  scores[selEl]++;
+  if(cur === 0) p1El = selEl;
+  if(cur === 1) p2El = selEl;
+  cur++;
+  if(cur >= PREGUNTAS.length) mostrarResultado();
+  else renderQ();
+}
+
+// ── CÁLCULO ───────────────────────────────────────────────────────
+function calcularNivel(el){
+  var pts = scores[el];
+  var pct = Math.round((pts/15)*100);
+  var nivel, badge, color;
+  if(pts <= 1){
+    nivel='baja'; badge='Desbalance por baja energía';
+    color='#1A3A5C';
+  } else if(pts <= 3){
+    nivel='equilibrio'; badge='En equilibrio';
+    color='#2D5A1B';
+    equilRespuestas++;
+  } else if(pts <= 5){
+    nivel='alta'; badge='Alta presencia de energía';
+    color='#B8860B';
+  } else {
+    nivel='exceso'; badge='Desbalance por exceso de energía';
+    color='#8B2500';
+  }
+  if(pts<=3 && p1El===el) nivel='equilibrio_activo';
+  if(pts>=4 && p1El===el && p2El!==el) nivel='equilibrio_activo';
+  if(pts>=4 && p2El===el) nivel = pts<=5 ? 'exceso_tendencia' : 'exceso';
+  if(pts<=3 && p2El===el) nivel='baja_tension';
+  return {pts:pts, pct:pct, nivel:nivel, badge:badge, color:color};
+}
+
+function estadoParaDatos(nivel){
+  if(nivel==='exceso'||nivel==='exceso_tendencia') return 'exceso';
+  if(nivel==='baja'||nivel==='baja_tension') return 'baja';
+  return 'equilibrio';
+}
+
+function badgeTexto(nivel){
+  var map = {
+    baja:'Desbalance por baja energía',
+    baja_tension:'Baja energía · zona sensible',
+    equilibrio:'En equilibrio',
+    equilibrio_activo:'Equilibrio activo',
+    alta:'Alta presencia de energía',
+    exceso_tendencia:'Tendencia a exceso',
+    exceso:'Desbalance por exceso de energía'
+  };
+  return map[nivel]||nivel;
+}
+
+function badgeBg(nivel){
+  if(nivel==='exceso'||nivel==='exceso_tendencia') return {bg:'#FAECE7',color:'#8B2500'};
+  if(nivel==='baja'||nivel==='baja_tension') return {bg:'#E6F1FB',color:'#1A3A5C'};
+  if(nivel==='alta') return {bg:'#FFF8E6',color:'#B8860B'};
+  return {bg:'#E8F5E0',color:'#2D5A1B'};
+}
+
+function barraColor(nivel, el){
+  if(nivel==='exceso'||nivel==='exceso_tendencia') return EL[el].color;
+  if(nivel==='baja'||nivel==='baja_tension') return '#aaa';
+  return EL[el].color;
+}
+
+// ── MOSTRAR RESULTADO ─────────────────────────────────────────────
+function mostrarResultado(){
+  var ordenados = ELS.map(function(e){
+    var info = calcularNivel(e);
+    return {el:e, info:info};
+  }).sort(function(a,b){ return b.info.pts - a.info.pts; });
+
+  var dom = ordenados[0];
+  var sec = ordenados[1];
+  var bajo = ordenados[ordenados.length-1];
+  var domEstado = estadoParaDatos(dom.info.nivel);
+  var secEstado = estadoParaDatos(sec.info.nivel);
+
+  var h = guardarHistorial(dom.el, domEstado);
+  var u = cargarUsuario();
+
+  // Bienvenida
+  var bienDiv = document.getElementById('res-bienvenida');
+  var numDiag = h.count;
+  var dias = h.count > 1 ? diasDesde(h.ultima > new Date().toISOString() ? h.primera : h.ultima) : 0;
+  var bienMsg = '';
+  if(numDiag === 1){
+    bienMsg = 'Bienvenida/o, '+(u?u.nombre:'')+'.<br>Este es tu <strong>primer diagnóstico</strong> con CIHOPERU.';
+  } else {
+    var diasStr = dias <= 1 ? 'hoy' : 'hace '+dias+' días';
+    bienMsg = 'Bienvenida/o, '+(u?u.nombre:'')+'.<br>Este es tu diagnóstico número <strong>'+numDiag+'</strong>. Último: <strong>'+diasStr+'</strong>.';
+  }
+  bienDiv.innerHTML = '<div class="res-bienvenida-name">'+bienMsg+'</div>';
+
+  // Tendencia del día
+  var tendFrases = {
+    exceso: '"Hoy predomina '+dom.el+'. Tu energía está muy activa y busca encontrar su cauce."',
+    exceso_tendencia: '"Hoy predomina '+dom.el+'. Hay mucha energía presente — obsérvala con atención."',
+    alta: '"Hoy predomina '+dom.el+'. Hay mucha presencia de esta energía — puede ser un recurso."',
+    equilibrio_activo: '"Hoy '+dom.el+' está fuerte y en armonía. Es un buen recurso para el día."',
+    equilibrio: '"Hoy tu energía está bastante equilibrada. '+dom.el+' lidera con suavidad."',
+    baja: '"Hoy '+dom.el+' está con poca energía. Tu sistema pide ocuparte de ti."',
+    baja_tension: '"Hoy '+dom.el+' está bajo y algo tenso. Merece tu atención hoy."'
+  };
+  document.getElementById('tendencia-text').textContent = tendFrases[dom.info.nivel] || ('"Hoy predomina '+dom.el+'."');
+
+  // Índice de equilibrio
+  var eqCount = ordenados.filter(function(x){
+    return (x.info.nivel==='equilibrio'||x.info.nivel==='equilibrio_activo') && x.el!==p2El;
+  }).length;
+  var eqPct = Math.round((eqCount/5)*100);
+  var eqMsgs = ['Tu energía está muy movilizada hoy','Tu energía tiene algunos focos activos','Tu energía tiene un equilibrio moderado','Tu energía tiene buen equilibrio general','Tu energía está muy equilibrada hoy'];
+  var eqMsg = eqMsgs[Math.min(Math.floor(eqPct/25), 4)];
+  var eqEl = document.getElementById('eq-pct');
+  eqEl.textContent = eqPct+'%';
+  eqEl.style.color = eqPct>=60?'#2D5A1B':eqPct>=40?'#B8860B':'#8B2500';
+  document.getElementById('eq-bar').style.width = eqPct+'%';
+  document.getElementById('eq-bar').style.background = eqPct>=60?'#2D5A1B':eqPct>=40?'#B8860B':'#8B2500';
+  document.getElementById('eq-msg').textContent = eqMsg;
+
+  // Barras
+  var barrasEl = document.getElementById('barras');
+  barrasEl.innerHTML = '';
+  ELS.forEach(function(e){
+    var info = calcularNivel(e);
+    var h = Math.max(info.pct, 5);
+    var col = barraColor(info.nivel, e);
+    var eLabel = info.nivel==='exceso'||info.nivel==='exceso_tendencia'?'Exceso':
+                 info.nivel==='baja'||info.nivel==='baja_tension'?'Bajo':
+                 info.nivel==='alta'?'Alta':'Equil.';
+    var eColor = info.nivel==='exceso'||info.nivel==='exceso_tendencia'?'#8B2500':
+                 info.nivel==='baja'||info.nivel==='baja_tension'?'#1A3A5C':
+                 info.nivel==='alta'?'#B8860B':'#2D5A1B';
+    var col2 = document.createElement('div');
+    col2.className = 'barra-col';
+    col2.innerHTML =
+      '<div class="barra-pct">'+info.pct+'%</div>'+
+      '<div class="barra-outer"><div class="barra-inner" style="height:'+h+'%;background:'+col+'"></div></div>'+
+      '<div class="barra-name">'+EL[e].emoji+'<br>'+e+'</div>'+
+      '<div class="barra-estado" style="color:'+eColor+'">'+eLabel+'</div>';
+    barrasEl.appendChild(col2);
+  });
+
+  // Zona sensible y recurso
+  var srHtml = '';
+  if(p2El){
+    srHtml += '<div class="card" style="margin:.7rem"><div class="sensible-box"><div class="sensible-label">Zona sensible hoy</div><div class="sensible-text">'+EL[p2El].emoji+' '+p2El+' — Observa si hay algo en esta energía que necesita tu atención hoy.</div></div>';
+    if(p1El && p1El !== p2El){
+      srHtml += '<div style="height:.5rem"></div><div class="recurso-box"><div class="recurso-label">Recurso positivo hoy</div><div class="recurso-text">'+EL[p1El].emoji+' '+p1El+' — Tu energía en equilibrio y como recurso hoy.</div></div>';
+    }
+    srHtml += '</div>';
+  } else if(p1El){
+    srHtml += '<div class="card" style="margin:.7rem"><div class="recurso-box"><div class="recurso-label">Recurso positivo hoy</div><div class="recurso-text">'+EL[p1El].emoji+' '+p1El+' — Tu energía en equilibrio y como recurso hoy.</div></div></div>';
+  }
+  document.getElementById('sensible-recurso').innerHTML = srHtml;
+
+  // Bloque dominante
+  var datos = DATOS[dom.el];
+  var esDes = domEstado==='exceso'||domEstado==='baja';
+  var fraseMain = domEstado==='equilibrio' ? datos.frase_equilibrio : datos.frase_desbalance;
+  var fraseInv = domEstado==='exceso' ? datos.inv_exceso :
+                 domEstado==='baja' ? datos.inv_baja :
+                 (dom.info.nivel==='equilibrio_activo'||dom.info.nivel==='alta') ? datos.inv_alta : datos.inv_eq;
+  var datosE = domEstado==='exceso' ? datos.exceso : domEstado==='baja' ? datos.baja : datos.exceso;
+  var badge = badgeTexto(dom.info.nivel);
+  var bc = badgeBg(dom.info.nivel);
+  var el = EL[dom.el];
+
+  var domHtml =
+    '<div class="dom-card" style="margin:.7rem;border-color:'+el.color+'">'+
+    '<div class="dom-header">'+
+    '<div class="dom-emoji">'+el.emoji+'</div>'+
+    '<div><div class="dom-el" style="color:'+el.color+'">'+dom.el+'</div>'+
+    '<div class="dom-sub">Elemento dominante · '+el.organos+'</div></div>'+
+    '</div>'+
+    '<span class="estado-badge" style="background:'+bc.bg+';color:'+bc.color+'">'+badge+'</span>'+
+    '<div class="frase-box" style="background:'+el.light+'">'+
+    '<div class="frase-main" style="color:'+el.color+'">'+fraseMain+'</div>'+
+    '<div class="frase-inv" style="color:'+el.color+'">'+fraseInv+'</div>'+
+    '</div>'+
+    '<div class="card-label" style="margin-bottom:.6rem">'+datosE.acc1.lbl+' · '+datosE.acc2.lbl+' · Flash · Consejo</div>'+
+    '<div class="acc-list">'+
+    accItem(datosE.acc1, el.color)+
+    accItem(datosE.acc2, el.color)+
+    accItem(datosE.flash, el.color)+
+    accItemConsejo(datosE.consejo, el.color)+
+    '</div></div>';
+  document.getElementById('dom-block').innerHTML = domHtml;
+
+  // Resumen
+  var resGrid = document.getElementById('resumen-grid');
+  resGrid.innerHTML = '';
+  var filas = [
+    {k:'Elemento secundario', v: EL[sec.el].emoji+' '+sec.el+' · '+sec.info.pct+'%', color: EL[sec.el].color},
+    {k:'Elemento menos expresado', v: EL[bajo.el].emoji+' '+bajo.el+' · '+bajo.info.pct+'%', color: EL[bajo.el].color}
+  ];
+  filas.forEach(function(f){
+    var r = document.createElement('div');
+    r.className = 'resumen-row';
+    r.innerHTML = '<span class="resumen-key">'+f.k+'</span><span class="resumen-val" style="color:'+f.color+'">'+f.v+'</span>';
+    resGrid.appendChild(r);
+  });
+
+  // Combinación
+  var ck1 = dom.el+'_'+domEstado+'-'+sec.el+'_'+secEstado;
+  var ck2 = sec.el+'_'+secEstado+'-'+dom.el+'_'+domEstado;
+  var comboTxt = COMBOS[ck1]||COMBOS[ck2]||
+    (EL[dom.el].emoji+' '+dom.el+' y '+EL[sec.el].emoji+' '+sec.el+' son tus energías más activas hoy. Atiende primero al elemento dominante y observa cómo el segundo se regula a partir de ahí.');
+  document.getElementById('combo-text').textContent = comboTxt;
+
+  // Google Forms — envío silencioso
+  enviarGoogleForms(dom, domEstado, sec, bajo, eqPct, u);
+
+  show('result');
+}
+
+function accItem(a, color){
+  return '<div class="acc-item"><div class="acc-icon">'+a.icon+'</div>'+
+    '<div class="acc-body"><div class="acc-lbl" style="color:'+color+'">'+a.lbl+'</div>'+
+    '<div class="acc-txt">'+a.txt+'</div></div></div>';
+}
+function accItemConsejo(a, color){
+  return '<div class="acc-item acc-consejo"><div class="acc-icon">'+a.icon+'</div>'+
+    '<div class="acc-body"><div class="acc-lbl" style="color:'+color+'">'+a.lbl+'</div>'+
+    '<div class="acc-txt">'+a.txt+'</div></div></div>';
+}
+
+// ── GOOGLE FORMS ──────────────────────────────────────────────────
+function enviarGoogleForms(dom, domEstado, sec, bajo, eqPct, u){
+  if(!u) return;
+  var ahora = new Date().toLocaleString('es-PE',{timeZone:'America/Lima'});
+  var params = [
+    'entry.2111427283='+encodeURIComponent(u.nombre||''),
+    'entry.1197006417='+encodeURIComponent(u.edad||''),
+    'entry.1674527309='+encodeURIComponent(u.genero||''),
+    'entry.384820452='+encodeURIComponent(u.pais||''),
+    'entry.1495659292='+encodeURIComponent(u.email||''),
+    'entry.548382927=Si',
+  ].join('&');
+  var url = 'https://docs.google.com/forms/d/e/1FAIpQLScDW6m7GXDa8ZHd9YczU3WzhAvCLxrd1tNyuPgesBdHEXX0zQ/formResponse?'+params;
+  var iframe = document.createElement('iframe');
+  iframe.style.display='none';
+  iframe.src = url;
+  document.body.appendChild(iframe);
+  setTimeout(function(){ if(iframe.parentNode) iframe.parentNode.removeChild(iframe); }, 5000);
+}
+
+// ── UTILIDADES ────────────────────────────────────────────────────
+function show(id){
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function reiniciar(){ show('registro'); precargarDatos(); }
+function actualizarDatos(){ show('registro'); precargarDatos(); }
+function borrarDatos(){
+  if(confirm('¿Deseas borrar todos tus datos guardados en este dispositivo?')){
+    localStorage.removeItem(LS_KEY);
+    localStorage.removeItem(LS_HIST);
+    document.getElementById('welcome-area').innerHTML='';
+    document.getElementById('btn-home-start').onclick = function(){ show('registro'); };
+    show('home');
+    alert('Tus datos han sido borrados.');
+  }
+}
+</script>
+</body>
+</html>
