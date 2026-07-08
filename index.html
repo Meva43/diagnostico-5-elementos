@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diagnóstico Diario de los 5 Elementos – CIHOPERU</title>
+<title>Chequeo Diario de tu Equilibrio Emocional – CIHOPERU</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -77,6 +77,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
 .res-bienvenida{background:white;margin:.7rem;border-radius:12px;padding:.9rem 1rem;border:1px solid var(--border);text-align:center}
 .res-bienvenida-name{font-size:13px;font-weight:500;color:var(--m);margin-bottom:.2rem}
 .res-bienvenida-msg{font-size:13px;color:var(--text);line-height:1.5}
+.res-hook{margin:1.1rem .7rem .3rem;text-align:center;font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--text);line-height:1.25}
+.res-hook em{color:var(--m);font-style:italic}
 .card{background:white;margin:.7rem;border-radius:12px;padding:1rem 1.1rem;border:1px solid var(--border)}
 .card-label{font-size:10px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
 .tendencia-box{background:var(--ml);margin:.7rem;border-radius:12px;padding:1rem 1.1rem;border:1px solid var(--mm)}
@@ -87,6 +89,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
 .eq-bar-fill{height:100%;border-radius:5px;transition:width .8s ease}
 .eq-pct{font-size:22px;font-weight:500;font-family:'DM Sans',sans-serif}
 .eq-msg{font-size:12px;color:var(--muted);margin-top:.3rem}
+.eq-explain{font-size:11.5px;color:var(--muted);margin-top:.5rem;padding-top:.5rem;border-top:1px solid #eee;line-height:1.5}
+.mapa-explain{font-size:12px;color:var(--muted);margin-bottom:.7rem;line-height:1.5}
+.dom-meaning-text{font-size:12.5px;color:var(--text);line-height:1.6;background:var(--cream);border-radius:10px;padding:.75rem .85rem;margin-bottom:.7rem}
+.acc-intro{font-size:12px;color:var(--muted);margin:0 .7rem .5rem;line-height:1.5}
 .barras-wrap{display:flex;align-items:flex-end;gap:7px;height:120px;padding:0 2px}
 .barra-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%}
 .barra-pct{font-size:10px;font-weight:500;color:var(--text)}
@@ -137,8 +143,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
 <div id="home" class="screen active">
   <div class="logo-ring">🌿</div>
   <div class="brand">CIHOPERU · May-Lis Valakivi</div>
-  <h1 class="home-title">Diagnóstico Diario de los<br><em>5 Elementos</em></h1>
-  <p class="home-sub">Medicina Tradicional China · Psicología Integrativa</p>
+  <h1 class="home-title">Chequeo Diario de tu<br><em>Equilibrio Emocional</em></h1>
+  <p class="home-sub">Basado en la Medicina Tradicional China</p>
   <div id="welcome-area"></div>
   <p class="home-frase">"Tu cuerpo habla. Hoy vamos a escucharlo."</p>
   <div class="dots">
@@ -199,14 +205,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
 <!-- RESULTADO -->
 <div id="result" class="screen">
   <div class="res-intro">
-    <div class="res-intro-brand">Diagnóstico Diario de los 5 Elementos – CIHOPERU</div>
-    <div class="res-intro-text">"Tu energía cambia cada día. Lo que ves aquí es tu momento actual, no una etiqueta, sino una invitación a ocuparte de ti."</div>
+    <div class="res-intro-brand">Chequeo Diario de tu Equilibrio Emocional – CIHOPERU</div>
+    <div class="res-intro-text">Según la Medicina Tradicional China existen 5 tipos de energía (Madera, Fuego, Tierra, Metal y Agua). Cada día, alguna puede estar más activa que las demás. Este chequeo te muestra cuál necesita hoy un poco más de tu atención.</div>
   </div>
   <div class="res-bienvenida" id="res-bienvenida"></div>
-  <div class="tendencia-box">
-    <div class="tendencia-label">Tendencia del día</div>
-    <div class="tendencia-text" id="tendencia-text"></div>
-  </div>
+  <div class="res-hook" id="res-hook"></div>
+
+  <!-- 1. ELEMENTO DOMINANTE (titular) -->
+  <div id="dom-headline"></div>
+
+  <!-- 2. QUÉ SIGNIFICA -->
+  <div id="dom-meaning"></div>
+
+  <!-- 3. ÍNDICE GENERAL -->
   <div class="card">
     <div class="card-label">Índice general de equilibrio</div>
     <div class="eq-bar-wrap">
@@ -214,24 +225,43 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);max
       <div class="eq-pct" id="eq-pct">0%</div>
     </div>
     <div class="eq-msg" id="eq-msg"></div>
+    <div class="eq-explain">Este porcentaje no es una nota ni un examen. Solo muestra qué tan repartida estuvo tu energía entre los 5 elementos en este momento — no si "te fue bien o mal".</div>
   </div>
+
+  <!-- 4. ACCIONES PRINCIPALES -->
+  <div id="dom-actions"></div>
+
+  <!-- 5. MAPA ENERGÉTICO -->
   <div class="card">
     <div class="card-label">Mapa energético de tus 5 elementos</div>
+    <div class="mapa-explain">Estas son las 5 energías que observa este chequeo. La barra más alta es tu elemento dominante, el que ya te mostramos arriba.</div>
     <div class="barras-wrap" id="barras"></div>
-    <div style="display:flex;justify-content:center;gap:1.25rem;margin-top:.9rem;font-size:11px;color:var(--muted)">
-      <span>🔵 Baja</span><span>🟢 Equilibrio</span><span>🟡 Alta</span><span>🔴 Exceso</span>
+    <div style="margin-top:.9rem;padding-top:.7rem;border-top:1px solid #eee">
+      <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:.4rem">El color de cada barra indica el <strong>nivel de esa energía hoy</strong> (no el color del elemento):</div>
+      <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:.9rem;font-size:12px;color:var(--text)">
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:11px;height:11px;border-radius:50%;background:#1A3A5C;display:inline-block"></span>Baja</span>
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:11px;height:11px;border-radius:50%;background:#2D5A1B;display:inline-block"></span>Equilibrio</span>
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:11px;height:11px;border-radius:50%;background:#B8860B;display:inline-block"></span>Alta</span>
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:11px;height:11px;border-radius:50%;background:#8B2500;display:inline-block"></span>Exceso</span>
+      </div>
     </div>
   </div>
+
+  <!-- 6. ZONA SENSIBLE + 7. RECURSO POSITIVO -->
   <div id="sensible-recurso"></div>
-  <div id="dom-block"></div>
+
+  <!-- 8. Detalle secundario -->
   <div class="card" id="resumen-card">
-    <div class="card-label">Tu energía hoy</div>
+    <div class="card-label">Tu energía hoy, en detalle</div>
     <div class="resumen-grid" id="resumen-grid"></div>
   </div>
+
+  <!-- 9. INTERPRETACIÓN COMPLETA -->
   <div class="card">
-    <div class="card-label">Interpretación de tu combinación</div>
+    <div class="card-label">¿Qué significa esto en conjunto?</div>
     <div class="combo-text" id="combo-text"></div>
   </div>
+
   <div class="res-foot">
     <button class="btn-repet" onclick="reiniciar()">Hacer el diagnóstico de nuevo</button>
     <div class="btns-data">
@@ -252,6 +282,23 @@ var EL = {
   Agua:  {emoji:'💧',color:'#1A3A5C',light:'#E6F1FB',border:'#1A3A5C',organos:'Riñones & Vejiga'}
 };
 var ELS = ['Madera','Fuego','Tierra','Metal','Agua'];
+
+// Reutiliza el mismo lenguaje de las preguntas 1 y 2 (no se inventa contenido nuevo)
+// para explicar, en "Zona sensible" y "Recurso positivo", cómo se puede sentir cada energía.
+var EMO_BIEN = {
+  Madera:'fluir con las cosas, ser creativo y tomar decisiones con claridad',
+  Fuego:'sentir alegría, vivir en paz y disfrutar la vida',
+  Tierra:'comprender a los demás, cuidarte y nutrir a quienes te rodean',
+  Metal:'mantener el orden, confiar en tu intuición y actuar con disciplina',
+  Agua:'tener voluntad, actuar con valentía y reflexionar profundamente'
+};
+var EMO_MAL = {
+  Madera:'irritación, frustración o impaciencia',
+  Fuego:'agitación, ansiedad o sensación de no poder parar',
+  Tierra:'preocupación, darle vueltas a todo o pesadez',
+  Metal:'tristeza, dificultad para soltar o melancolía',
+  Agua:'inseguridad, miedo o sensación de parálisis'
+};
 
 // ── PREGUNTAS ORIGINALES ──────────────────────────────────────────
 var PREGUNTAS = [
@@ -670,7 +717,7 @@ function badgeTexto(nivel){
     baja_tension:'Baja energía · zona sensible',
     equilibrio:'En equilibrio',
     equilibrio_activo:'Equilibrio activo',
-    alta:'Alta presencia de energía',
+    alta:'Energía más activa hoy',
     exceso_tendencia:'Tendencia a exceso',
     exceso:'Desbalance por exceso de energía'
   };
@@ -685,9 +732,12 @@ function badgeBg(nivel){
 }
 
 function barraColor(nivel, el){
-  if(nivel==='exceso'||nivel==='exceso_tendencia') return EL[el].color;
-  if(nivel==='baja'||nivel==='baja_tension') return '#aaa';
-  return EL[el].color;
+  // Antes: devolvía el color del elemento (confundía "elemento" con "nivel").
+  // Ahora: usa el mismo código de color que la leyenda Baja/Equilibrio/Alta/Exceso.
+  if(nivel==='exceso'||nivel==='exceso_tendencia') return '#8B2500'; // rojo
+  if(nivel==='baja'||nivel==='baja_tension') return '#1A3A5C';       // azul
+  if(nivel==='alta') return '#B8860B';                                // dorado
+  return '#2D5A1B'; // equilibrio / equilibrio_activo — verde
 }
 
 // ── MOSTRAR RESULTADO ─────────────────────────────────────────────
@@ -719,24 +769,55 @@ function mostrarResultado(){
   }
   bienDiv.innerHTML = '<div class="res-bienvenida-name">'+bienMsg+'</div>';
 
-  // Tendencia del día
-  var tendFrases = {
-    exceso: '"Hoy predomina '+dom.el+'. Tu energía está muy activa y busca encontrar su cauce."',
-    exceso_tendencia: '"Hoy predomina '+dom.el+'. Hay mucha energía presente — obsérvala con atención."',
-    alta: '"Hoy predomina '+dom.el+'. Hay mucha presencia de esta energía — puede ser un recurso."',
-    equilibrio_activo: '"Hoy '+dom.el+' está fuerte y en armonía. Es un buen recurso para el día."',
-    equilibrio: '"Hoy tu energía está bastante equilibrada. '+dom.el+' lidera con suavidad."',
-    baja: '"Hoy '+dom.el+' está con poca energía. Tu sistema pide ocuparte de ti."',
-    baja_tension: '"Hoy '+dom.el+' está bajo y algo tenso. Merece tu atención hoy."'
-  };
-  document.getElementById('tendencia-text').textContent = tendFrases[dom.info.nivel] || ('"Hoy predomina '+dom.el+'."');
+  // Gancho grande — se muestra ANTES de revelar el elemento específico
+  document.getElementById('res-hook').innerHTML = 'Hoy tu energía necesita <em>esto</em>…';
+
+  // Datos del elemento dominante (se preparan aquí porque ahora se muestran primero)
+  var datos = DATOS[dom.el];
+  var esDes = domEstado==='exceso'||domEstado==='baja';
+  var fraseMain = domEstado==='equilibrio' ? datos.frase_equilibrio : datos.frase_desbalance;
+  var fraseInv = domEstado==='exceso' ? datos.inv_exceso :
+                 domEstado==='baja' ? datos.inv_baja :
+                 (dom.info.nivel==='equilibrio_activo'||dom.info.nivel==='alta') ? datos.inv_alta : datos.inv_eq;
+  var datosE = domEstado==='exceso' ? datos.exceso : domEstado==='baja' ? datos.baja : datos.exceso;
+  var badge = badgeTexto(dom.info.nivel);
+  var bc = badgeBg(dom.info.nivel);
+  var el = EL[dom.el];
+  var diagExtra = (domEstado==='exceso' && datos.exceso && datos.exceso.diag) ? datos.exceso.diag :
+                  (domEstado==='baja' && datos.baja && datos.baja.diag) ? datos.baja.diag : '';
+
+  // 1. TITULAR — elemento dominante
+  document.getElementById('dom-headline').innerHTML =
+    '<div class="dom-card" style="margin:.7rem;border-color:'+el.color+'">'+
+    '<div class="dom-header">'+
+    '<div class="dom-emoji">'+el.emoji+'</div>'+
+    '<div><div class="dom-el" style="color:'+el.color+'">Hoy tu energía dominante es '+dom.el+'</div>'+
+    '<div class="dom-sub">'+el.organos+'</div>'+
+    '<div class="dom-sub" style="opacity:.75">Según la Medicina Tradicional China</div></div>'+
+    '</div>'+
+    '<span class="estado-badge" style="background:'+bc.bg+';color:'+bc.color+'">'+badge+'</span>'+
+    '</div>';
+
+  // 2. QUÉ SIGNIFICA — explicación simple + interpretación
+  document.getElementById('dom-meaning').innerHTML =
+    '<div class="card" style="margin:.7rem">'+
+    '<div class="dom-meaning-text">'+
+    'Esto no significa que estés enferma/o, ni que "seas" una persona '+dom.el+'. '+
+    'Solo indica que, hoy, esta fue la energía que más apareció en tus respuestas.'+
+    '</div>'+
+    '<div class="frase-box" style="background:'+el.light+'">'+
+    '<div class="frase-main" style="color:'+el.color+'">'+fraseMain+'</div>'+
+    '<div class="frase-inv" style="color:'+el.color+'">'+fraseInv+'</div>'+
+    (diagExtra ? '<div class="frase-inv" style="color:'+el.color+';margin-top:.4rem">'+diagExtra+'</div>' : '')+
+    '</div>'+
+    '</div>';
 
   // Índice de equilibrio
   var eqCount = ordenados.filter(function(x){
     return (x.info.nivel==='equilibrio'||x.info.nivel==='equilibrio_activo') && x.el!==p2El;
   }).length;
   var eqPct = Math.round((eqCount/5)*100);
-  var eqMsgs = ['Tu energía está muy movilizada hoy','Tu energía tiene algunos focos activos','Tu energía tiene un equilibrio moderado','Tu energía tiene buen equilibrio general','Tu energía está muy equilibrada hoy'];
+  var eqMsgs = ['Tu energía está muy movilizada hoy','Tu energía tiene algunos focos activos','Tu energía está bastante equilibrada hoy','Tu energía tiene buen equilibrio general','Tu energía está muy equilibrada hoy'];
   var eqMsg = eqMsgs[Math.min(Math.floor(eqPct/25), 4)];
   var eqEl = document.getElementById('eq-pct');
   eqEl.textContent = eqPct+'%';
@@ -771,40 +852,21 @@ function mostrarResultado(){
   // Zona sensible y recurso
   var srHtml = '';
   if(p2El){
-    srHtml += '<div class="card" style="margin:.7rem"><div class="sensible-box"><div class="sensible-label">Zona sensible hoy</div><div class="sensible-text">'+EL[p2El].emoji+' '+p2El+' — Observa si hay algo en esta energía que necesita tu atención hoy.</div></div>';
+    srHtml += '<div class="card" style="margin:.7rem"><div class="sensible-box"><div class="sensible-label">Zona sensible hoy</div><div class="sensible-text">'+EL[p2El].emoji+' '+p2El+' es tu segunda energía más marcada hoy. Si en algún momento del día sientes '+EMO_MAL[p2El]+', puede estar relacionado con esto — no es nada grave, solo obsérvalo.</div></div>';
     if(p1El && p1El !== p2El){
-      srHtml += '<div style="height:.5rem"></div><div class="recurso-box"><div class="recurso-label">Recurso positivo hoy</div><div class="recurso-text">'+EL[p1El].emoji+' '+p1El+' — Tu energía en equilibrio y como recurso hoy.</div></div>';
+      srHtml += '<div style="height:.5rem"></div><div class="recurso-box"><div class="recurso-label">Recurso positivo hoy</div><div class="recurso-text">'+EL[p1El].emoji+' '+p1El+' está en equilibrio hoy — apóyate en ella. Es la energía que te ayuda a '+EMO_BIEN[p1El]+'.</div></div>';
     }
     srHtml += '</div>';
   } else if(p1El){
-    srHtml += '<div class="card" style="margin:.7rem"><div class="recurso-box"><div class="recurso-label">Recurso positivo hoy</div><div class="recurso-text">'+EL[p1El].emoji+' '+p1El+' — Tu energía en equilibrio y como recurso hoy.</div></div></div>';
+    srHtml += '<div class="card" style="margin:.7rem"><div class="recurso-box"><div class="recurso-label">Recurso positivo hoy</div><div class="recurso-text">'+EL[p1El].emoji+' '+p1El+' está en equilibrio hoy — apóyate en ella. Es la energía que te ayuda a '+EMO_BIEN[p1El]+'.</div></div></div>';
   }
   document.getElementById('sensible-recurso').innerHTML = srHtml;
 
-  // Bloque dominante
-  var datos = DATOS[dom.el];
-  var esDes = domEstado==='exceso'||domEstado==='baja';
-  var fraseMain = domEstado==='equilibrio' ? datos.frase_equilibrio : datos.frase_desbalance;
-  var fraseInv = domEstado==='exceso' ? datos.inv_exceso :
-                 domEstado==='baja' ? datos.inv_baja :
-                 (dom.info.nivel==='equilibrio_activo'||dom.info.nivel==='alta') ? datos.inv_alta : datos.inv_eq;
-  var datosE = domEstado==='exceso' ? datos.exceso : domEstado==='baja' ? datos.baja : datos.exceso;
-  var badge = badgeTexto(dom.info.nivel);
-  var bc = badgeBg(dom.info.nivel);
-  var el = EL[dom.el];
-
-  var domHtml =
-    '<div class="dom-card" style="margin:.7rem;border-color:'+el.color+'">'+
-    '<div class="dom-header">'+
-    '<div class="dom-emoji">'+el.emoji+'</div>'+
-    '<div><div class="dom-el" style="color:'+el.color+'">'+dom.el+'</div>'+
-    '<div class="dom-sub">Elemento dominante · '+el.organos+'</div></div>'+
-    '</div>'+
-    '<span class="estado-badge" style="background:'+bc.bg+';color:'+bc.color+'">'+badge+'</span>'+
-    '<div class="frase-box" style="background:'+el.light+'">'+
-    '<div class="frase-main" style="color:'+el.color+'">'+fraseMain+'</div>'+
-    '<div class="frase-inv" style="color:'+el.color+'">'+fraseInv+'</div>'+
-    '</div>'+
+  // 4. ACCIONES PRINCIPALES
+  document.getElementById('dom-actions').innerHTML =
+    '<div class="card" style="margin:.7rem">'+
+    '<div class="card-label">Qué puedes hacer hoy</div>'+
+    '<div class="acc-intro" style="margin-left:0;margin-right:0">Estas son pequeñas acciones que pueden ayudarte a equilibrar tu energía '+dom.el+' durante el día de hoy.</div>'+
     '<div class="card-label" style="margin-bottom:.6rem">'+datosE.acc1.lbl+' · '+datosE.acc2.lbl+' · Flash · Consejo</div>'+
     '<div class="acc-list">'+
     accItem(datosE.acc1, el.color)+
@@ -812,14 +874,13 @@ function mostrarResultado(){
     accItem(datosE.flash, el.color)+
     accItemConsejo(datosE.consejo, el.color)+
     '</div></div>';
-  document.getElementById('dom-block').innerHTML = domHtml;
 
   // Resumen
   var resGrid = document.getElementById('resumen-grid');
   resGrid.innerHTML = '';
   var filas = [
-    {k:'Elemento secundario', v: EL[sec.el].emoji+' '+sec.el+' · '+sec.info.pct+'%', color: EL[sec.el].color},
-    {k:'Elemento menos expresado', v: EL[bajo.el].emoji+' '+bajo.el+' · '+bajo.info.pct+'%', color: EL[bajo.el].color}
+    {k:'Segunda energía más activa', v: EL[sec.el].emoji+' '+sec.el+' · '+sec.info.pct+'%', color: EL[sec.el].color},
+    {k:'Energía menos activa', v: EL[bajo.el].emoji+' '+bajo.el+' · '+bajo.info.pct+'%', color: EL[bajo.el].color}
   ];
   filas.forEach(function(f){
     var r = document.createElement('div');
@@ -832,8 +893,10 @@ function mostrarResultado(){
   var ck1 = dom.el+'_'+domEstado+'-'+sec.el+'_'+secEstado;
   var ck2 = sec.el+'_'+secEstado+'-'+dom.el+'_'+domEstado;
   var comboTxt = COMBOS[ck1]||COMBOS[ck2]||
-    (EL[dom.el].emoji+' '+dom.el+' y '+EL[sec.el].emoji+' '+sec.el+' son tus energías más activas hoy. Atiende primero al elemento dominante y observa cómo el segundo se regula a partir de ahí.');
-  document.getElementById('combo-text').textContent = comboTxt;
+    (EL[dom.el].emoji+' '+dom.el+' y '+EL[sec.el].emoji+' '+sec.el+' son tus energías más activas hoy. Empieza por cuidar tu energía '+dom.el+'. Cuando ella se equilibre, es muy probable que la energía '+sec.el+' también encuentre su equilibrio de forma natural.');
+  document.getElementById('combo-text').innerHTML =
+    '<div style="font-size:11.5px;color:var(--muted);margin-bottom:.5rem;line-height:1.5">Junta todo lo anterior: así se ven tus dos energías más activas trabajando juntas hoy.</div>'+
+    '<div>'+comboTxt+'</div>';
 
   // Google Forms — envío silencioso
   enviarGoogleForms(dom, domEstado, sec, bajo, eqPct, u);
